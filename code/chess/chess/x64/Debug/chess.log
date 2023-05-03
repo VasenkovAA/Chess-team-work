@@ -1,0 +1,3 @@
+﻿  chess.cpp
+C:\Users\user\Desktop\Chess\code\chess\chess\chess.cpp(184): warning C4715: TPawn::check_move: значение возвращается не при всех путях выполнения
+  chess.vcxproj -> C:\Users\user\Desktop\Chess\code\chess\x64\Debug\chess.exe
