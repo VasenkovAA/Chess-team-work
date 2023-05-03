@@ -1,0 +1,108 @@
+<mxfile host="app.diagrams.net" modified="2023-04-26T16:57:28.950Z" agent="Mozilla/5.0 (X11; Linux x86_64; rv:109.0) Gecko/20100101 Firefox/112.0" etag="ca-BSd4H32WTvQ-OkmBC" version="21.2.2" type="device">
+  <diagram name="Страница 1" id="Kr5EKcb_w1w7nWSMQ14a">
+    <mxGraphModel dx="1218" dy="739" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="yAbLBqHMgfI3lFPjUQ2z-3" value="GUI" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="1">
+          <mxGeometry x="40" y="40" width="360" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="yAbLBqHMgfI3lFPjUQ2z-4" value="Ход куда-то(координаты начала,координаты конца)" style="text;strokeColor=#d6b656;fillColor=#fff2cc;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="yAbLBqHMgfI3lFPjUQ2z-3">
+          <mxGeometry y="30" width="360" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="yAbLBqHMgfI3lFPjUQ2z-5" value="Подсветка хода(координаты точки)" style="text;strokeColor=#b85450;fillColor=#f8cecc;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="yAbLBqHMgfI3lFPjUQ2z-3">
+          <mxGeometry y="60" width="360" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="yAbLBqHMgfI3lFPjUQ2z-7" value="TDesk" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="1">
+          <mxGeometry x="39" y="151" width="410" height="268" as="geometry" />
+        </mxCell>
+        <mxCell id="yAbLBqHMgfI3lFPjUQ2z-8" value="TFigure mass[32] - static - массив всех фигур" style="text;strokeColor=#82b366;fillColor=#d5e8d4;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="yAbLBqHMgfI3lFPjUQ2z-7">
+          <mxGeometry y="26" width="410" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="yAbLBqHMgfI3lFPjUQ2z-9" value="History - история ходов(пока хз как хронить)" style="text;strokeColor=#b85450;fillColor=#f8cecc;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="yAbLBqHMgfI3lFPjUQ2z-7">
+          <mxGeometry y="52" width="410" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="yAbLBqHMgfI3lFPjUQ2z-10" value="int muve_count - Кол-во ходов с начала игры" style="text;strokeColor=#82b366;fillColor=#d5e8d4;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="yAbLBqHMgfI3lFPjUQ2z-7">
+          <mxGeometry y="78" width="410" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="yAbLBqHMgfI3lFPjUQ2z-11" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" vertex="1" parent="yAbLBqHMgfI3lFPjUQ2z-7">
+          <mxGeometry y="104" width="410" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="yAbLBqHMgfI3lFPjUQ2z-15" value="Tcoord* get_list_coord(Tcoord first)" style="text;strokeColor=#b85450;fillColor=#f8cecc;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="yAbLBqHMgfI3lFPjUQ2z-7">
+          <mxGeometry y="112" width="410" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="yAbLBqHMgfI3lFPjUQ2z-13" value="bool check_game_mehanics(Tcoord first,Tcoord second) -&amp;nbsp; проверка на рокировку/на стояние фигур между/,,,/съедение&lt;br&gt;сначала проверяет может ли фигура сходить в назначиную координату, затем проверяет возможность рокировки и других механик" style="text;strokeColor=#d6b656;fillColor=#fff2cc;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="yAbLBqHMgfI3lFPjUQ2z-7">
+          <mxGeometry y="142" width="410" height="68" as="geometry" />
+        </mxCell>
+        <mxCell id="yAbLBqHMgfI3lFPjUQ2z-19" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="yAbLBqHMgfI3lFPjUQ2z-7" source="yAbLBqHMgfI3lFPjUQ2z-12" target="yAbLBqHMgfI3lFPjUQ2z-13">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="yAbLBqHMgfI3lFPjUQ2z-12" value="bool move_to(Tcoord first,Tcoord second) -метод вызывается визуальным интерфейсом программы, возвращает true - если ход выполнился" style="text;strokeColor=#d6b656;fillColor=#fff2cc;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="yAbLBqHMgfI3lFPjUQ2z-7">
+          <mxGeometry y="210" width="410" height="58" as="geometry" />
+        </mxCell>
+        <mxCell id="yAbLBqHMgfI3lFPjUQ2z-17" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="yAbLBqHMgfI3lFPjUQ2z-5" target="yAbLBqHMgfI3lFPjUQ2z-15">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="yAbLBqHMgfI3lFPjUQ2z-18" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="yAbLBqHMgfI3lFPjUQ2z-4" target="yAbLBqHMgfI3lFPjUQ2z-12">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="480" y="85" />
+              <mxPoint x="480" y="390" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="yAbLBqHMgfI3lFPjUQ2z-21" value="TFigure" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="1">
+          <mxGeometry x="530" y="465" width="170" height="112" as="geometry" />
+        </mxCell>
+        <mxCell id="yAbLBqHMgfI3lFPjUQ2z-38" value="Наследование" style="shape=flexArrow;endArrow=classic;html=1;rounded=0;" edge="1" parent="yAbLBqHMgfI3lFPjUQ2z-21" target="yAbLBqHMgfI3lFPjUQ2z-27">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint y="45" as="sourcePoint" />
+            <mxPoint x="50" y="-5" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="yAbLBqHMgfI3lFPjUQ2z-22" value="TCoord coord" style="text;strokeColor=#82b366;fillColor=#d5e8d4;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="yAbLBqHMgfI3lFPjUQ2z-21">
+          <mxGeometry y="26" width="170" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="yAbLBqHMgfI3lFPjUQ2z-23" value="TFigure_type figure_type" style="text;strokeColor=#82b366;fillColor=#d5e8d4;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="yAbLBqHMgfI3lFPjUQ2z-21">
+          <mxGeometry y="52" width="170" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="yAbLBqHMgfI3lFPjUQ2z-24" value="TFigure_color color" style="text;strokeColor=#82b366;fillColor=#d5e8d4;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="yAbLBqHMgfI3lFPjUQ2z-21">
+          <mxGeometry y="78" width="170" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="yAbLBqHMgfI3lFPjUQ2z-25" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" vertex="1" parent="yAbLBqHMgfI3lFPjUQ2z-21">
+          <mxGeometry y="104" width="170" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="yAbLBqHMgfI3lFPjUQ2z-27" value="TPawn:TFigure" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="1">
+          <mxGeometry x="199" y="465" width="240" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="yAbLBqHMgfI3lFPjUQ2z-28" value="bool проверка(Tcoord)" style="text;strokeColor=#d6b656;fillColor=#fff2cc;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="yAbLBqHMgfI3lFPjUQ2z-27">
+          <mxGeometry y="26" width="240" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="yAbLBqHMgfI3lFPjUQ2z-29" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" vertex="1" parent="yAbLBqHMgfI3lFPjUQ2z-27">
+          <mxGeometry y="52" width="240" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="yAbLBqHMgfI3lFPjUQ2z-34" value="void move_to(Tcoord tmp)" style="text;strokeColor=#d6b656;fillColor=#fff2cc;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="yAbLBqHMgfI3lFPjUQ2z-27">
+          <mxGeometry y="60" width="240" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="yAbLBqHMgfI3lFPjUQ2z-33" value="Tcoord* possible_moves(Tcoord first)" style="text;strokeColor=#b85450;fillColor=#f8cecc;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="yAbLBqHMgfI3lFPjUQ2z-27">
+          <mxGeometry y="90" width="240" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="yAbLBqHMgfI3lFPjUQ2z-31" value="Доп примочки&lt;br&gt;&lt;br&gt;&lt;div&gt;1- поставить флаг на существование&lt;br&gt;&lt;/div&gt;" style="shape=module;align=left;spacingLeft=20;align=center;verticalAlign=top;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="1">
+          <mxGeometry x="697" y="465" width="180" height="68" as="geometry" />
+        </mxCell>
+        <mxCell id="yAbLBqHMgfI3lFPjUQ2z-35" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;" edge="1" parent="1" source="yAbLBqHMgfI3lFPjUQ2z-15" target="yAbLBqHMgfI3lFPjUQ2z-33">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="10" y="278" />
+              <mxPoint x="10" y="635" />
+              <mxPoint x="319" y="635" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="yAbLBqHMgfI3lFPjUQ2z-36" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="yAbLBqHMgfI3lFPjUQ2z-13" target="yAbLBqHMgfI3lFPjUQ2z-28">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
