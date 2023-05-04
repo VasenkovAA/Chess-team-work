@@ -309,7 +309,7 @@ public:
     }
     ~TQueen() {};//деструктор
 
-    TCoordMass& get_list_coord()  {};//возвращает список координат, куда фигура может сдвинуться, начальные координаты берет от свего обьекта.
+    //TCoordMass& get_list_coord()  {};//возвращает список координат, куда фигура может сдвинуться, начальные координаты берет от свего обьекта.
     bool check_move(TCoord& coord_last) {
         if (coord_last.get_x() == coord.get_x() || coord_last.get_y() == coord.get_y()) {
             return true;
@@ -338,13 +338,40 @@ public:
 //Класс слон
 class TBishop :public TFigure {
 public:
-    TBishop() {};//конструктор по умолчанию
-    TBishop(TBishop& tmp) {};//конструктор копирования
+    TBishop(short int _id, TCoord _coord, TFigure_color _color) {
+        type = bishop;
+        id = _id;
+        coord.set_x(_coord.get_x());
+        coord.set_y(_coord.get_y());
+        color = _color;
+    }
+    TBishop() {
+        id = -1;
+        type = bishop;
+        color = no_color;
+        coord.set_x(-1);
+        coord.set_y(-1);
+    }
+    TBishop(TBishop& tmp) {
+        type = bishop;
+        id = tmp.id;
+        coord.set_x(tmp.coord.get_x());
+        coord.set_y(tmp.coord.get_y());
+        color = tmp.color;
+    }
     ~TBishop() {};//деструктор
 
-    //TCoordMass& get_list_coord() {};//возвращает список координат, куда фигура может сдвинуться, начальные координаты берет от свего обьекта.
-    //bool check_move(TCoord& coord_last) {};//возвращает true если фигура может передвинуться на переданные координаты.
-    void move_to(TCoord& coord_last) {};//пердвигает фигуру на переданные координаты без проверки(просто меняет свое поле TCoord). 
+    //TCoordMass& get_list_coord()  {};//возвращает список координат, куда фигура может сдвинуться, начальные координаты берет от свего обьекта.
+    bool check_move(TCoord& coord_last) {
+        if (abs(coord.get_x() - coord_last.get_x()) == abs(coord.get_y() - coord_last.get_y())) {
+            return true;
+        }
+        else { return false; }
+    }
+    void move_to(TCoord& coord_last) {
+        coord.set_x(coord_last.get_x());
+        coord.set_y(coord_last.get_y());
+    }
 };
 //Класс конь
 class TKnight :public TFigure {
