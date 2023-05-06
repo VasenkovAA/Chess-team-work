@@ -36,6 +36,15 @@ public:
         return ((x == tmp.x) && (y == tmp.y));
     }
     friend ostream& operator<<(ostream& os, const TCoord& coord);
+    TCoord(short int _x, short int _y) {
+        if (_x>=-1 &&_x<=7&&_y >=-1&&_y<=7) { x = _x; y = _y; }
+        else { x = -1; y = -1; };
+    }
+    TCoord(TCoord& tmp) {
+        x = tmp.x;
+        y = tmp.y;
+    }
+    TCoord() { x = -1; y = -1; }
 };
 ostream& operator<<(ostream& os, const TCoord& coord) {
     os << "X = " << coord.x << "Y = " << coord.y;
@@ -105,9 +114,15 @@ protected:
     TFigure_type type;//Тип фигуры задается в конструкторе наследующих классов.
     TCoord coord;//координата фигуры, если фигура съедена - (-1,-1)
     TFigure_color color;//цвет фигуры
-    virtual TCoordMass& get_list_coord() = 0;
-    virtual bool check_move(TCoord& coord_last) = 0;
-    virtual void move_to(TCoord& coord_last) = 0;
+    virtual TCoordMass& get_list_coord() = 0 ;
+    virtual bool check_move(TCoord& coord_last) = 0 ;
+    virtual void move_to(TCoord& coord_last) = 0 ;
+    TFigure() {}
+    TFigure(TFigure& tmp) {}
+    TFigure(short int _id, TCoord _coord, TFigure_color _color) {}
+    ~TFigure() {}
+
+
 };
 /*Массив фигур, нужен для корректной работы всех механизмов в классе TGame.
 Должен содержать в себе перегрузки индексации, = , и другие, которые понадобятся в классе TGame
@@ -309,7 +324,7 @@ public:
     }
     ~TQueen() {};//деструктор
 
-    //TCoordMass& get_list_coord()  {};//возвращает список координат, куда фигура может сдвинуться, начальные координаты берет от свего обьекта.
+    TCoordMass& get_list_coord()  {};//возвращает список координат, куда фигура может сдвинуться, начальные координаты берет от свего обьекта.
     bool check_move(TCoord& coord_last) {
         if (coord_last.get_x() == coord.get_x() || coord_last.get_y() == coord.get_y()) {
             return true;
@@ -327,14 +342,61 @@ public:
 //Класс ладья
 class TRook :public TFigure {
 public:
-    TRook() {};//конструктор по умолчанию
-    TRook(TRook& tmp) {};//конструктор копирования
+    TRook();//конструктор по умолчанию
+    TRook(TRook& tmp);//конструктор копирования
+    TRook(short int _id, TCoord _coord, TFigure_color _color);
     ~TRook() {};//деструктор
 
-    //TCoordMass& get_list_coord() {};//возвращает список координат, куда фигура может сдвинуться, начальные координаты берет от свего обьекта.
-    //bool check_move(TCoord& coord_last) {};//возвращает true если фигура может передвинуться на переданные координаты.
-    void move_to(TCoord& coord_last) {};//пердвигает фигуру на переданные координаты без проверки(просто меняет свое поле TCoord). 
+    TCoordMass& get_list_coord();//возвращает список координат, куда фигура может сдвинуться, начальные координаты берет от свего обьекта.
+    bool check_move(TCoord& coord_last);//возвращает true если фигура может передвинуться на переданные координаты.
+    void move_to(TCoord& coord_last);//пердвигает фигуру на переданные координаты без проверки(просто меняет свое поле TCoord). 
 };
+TRook::TRook(TRook& tmp) {
+    type = rook;
+    id = tmp.id;
+    coord.set_x(tmp.coord.get_x());
+    coord.set_y(tmp.coord.get_y());
+    color = tmp.color;
+}
+TRook::TRook() {
+    id = -1;
+    type = rook;
+    color = no_color;
+    coord.set_x(-1);
+    coord.set_y(-1);
+}
+TRook::TRook(short int _id, TCoord _coord, TFigure_color _color) {
+    type = rook;
+    id = _id;
+    coord.set_x(_coord.get_x());
+    coord.set_y(_coord.get_y());
+    color = _color;
+}
+void TRook::move_to(TCoord& coord_last) {
+    coord.set_x(coord_last.get_x());
+    coord.set_y(coord_last.get_y());
+}
+bool TRook::check_move(TCoord& coord_last) {
+    if (coord_last.get_x() == coord.get_x() && (coord_last.get_y() > -1) && (coord_last.get_y() != coord.get_y())) return true;
+    if (coord_last.get_y() == coord.get_y() && (coord_last.get_x() > -1) && (coord_last.get_x() != coord.get_x())) return true;
+    else return false;
+};
+TCoordMass& TRook::get_list_coord() {
+    TCoordMass* mass = new TCoordMass;
+    for (int i = coord.get_y()+1; i <= 7; i++) {
+        mass->add_coord(coord.get_x(), i);
+    };
+    for (int i = coord.get_y()-1; i >= 0; i--) {
+        mass->add_coord(coord.get_x(), i);
+    };
+    for (int i = coord.get_x()+1; i <= 7; i++) {
+        mass->add_coord(i, coord.get_y());
+    };
+    for (int i = coord.get_x()-1; i >= 0; i--) {
+        mass->add_coord(i, coord.get_y());
+    };
+    return *mass;
+}
 //Класс слон
 class TBishop :public TFigure {
 public:
@@ -361,7 +423,7 @@ public:
     }
     ~TBishop() {};//деструктор
 
-    //TCoordMass& get_list_coord()  {};//возвращает список координат, куда фигура может сдвинуться, начальные координаты берет от свего обьекта.
+    TCoordMass& get_list_coord()  {};//возвращает список координат, куда фигура может сдвинуться, начальные координаты берет от свего обьекта.
     bool check_move(TCoord& coord_last) {
         if (abs(coord.get_x() - coord_last.get_x()) == abs(coord.get_y() - coord_last.get_y())) {
             return true;
@@ -376,14 +438,64 @@ public:
 //Класс конь
 class TKnight :public TFigure {
 public:
-    TKnight() {};//конструктор по умолчанию
-    TKnight(TKnight& tmp) {};//конструктор копирования
+    TKnight(short int _id, TCoord _coord, TFigure_color _color);
+    TKnight();//конструктор по умолчанию
+    TKnight(TKnight& tmp);//конструктор копирования
     ~TKnight() {};//деструктор
 
-    //TCoordMass& get_list_coord() {};//возвращает список координат, куда фигура может сдвинуться, начальные координаты берет от свего обьекта.
-    //bool check_move(TCoord& coord_last) {};//возвращает true если фигура может передвинуться на переданные координаты.
-    void move_to(TCoord& coord_last) {};//пердвигает фигуру на переданные координаты без проверки(просто меняет свое поле TCoord). 
+    TCoordMass& get_list_coord();//возвращает список координат, куда фигура может сдвинуться, начальные координаты берет от свего обьекта.
+    bool check_move(TCoord& coord_last);//возвращает true если фигура может передвинуться на переданные координаты.
+    void move_to(TCoord& coord_last);//пердвигает фигуру на переданные координаты без проверки(просто меняет свое поле TCoord). 
 };
+TKnight::TKnight(TKnight& tmp) {
+    type = knight;
+    id = tmp.id;
+    coord.set_x(tmp.coord.get_x());
+    coord.set_y(tmp.coord.get_y());
+    color = tmp.color;
+}
+TKnight::TKnight() {
+    id = -1;
+    type = knight;
+    color = no_color;
+    coord.set_x(-1);
+    coord.set_y(-1);
+}
+TKnight::TKnight(short int _id, TCoord _coord, TFigure_color _color) {
+    type = knight;
+    id = _id;
+    coord.set_x(_coord.get_x());
+    coord.set_y(_coord.get_y());
+    color = _color;
+}
+bool TKnight::check_move(TCoord& coord_last) {
+    if (coord_last == TCoord(-1, -1)) throw invalid_index;
+    if ((TCoord(coord.get_y() - 2, coord.get_x() - 1) == coord_last)&& (coord.get_y() - 2 >= 0 && coord.get_x() - 1 >= 0)) return true;
+    if ((TCoord(coord.get_y() - 2, coord.get_x() + 1) == coord_last)&& (coord.get_y() - 2 >= 0 && coord.get_x() + 1 <= 7)) return true;
+    if ((TCoord(coord.get_y() - 1, coord.get_x() + 2) == coord_last)&& (coord.get_y() - 1 >= 0 && coord.get_x() + 2 <= 7)) return true;
+    if ((TCoord(coord.get_y() + 1, coord.get_x() + 2) == coord_last)&& (coord.get_y() + 1 <= 7 && coord.get_x() + 2 <= 7)) return true;
+    if ((TCoord(coord.get_y() - 1, coord.get_x() - 2) == coord_last)&& (coord.get_y() - 1 >= 0 && coord.get_x() - 2 >= 0)) return true;
+    if ((TCoord(coord.get_y() + 1, coord.get_x() - 2) == coord_last)&& (coord.get_y() + 1 <= 7 && coord.get_x() - 2 >= 0)) return true;
+    if ((TCoord(coord.get_y() + 2, coord.get_x() - 1) == coord_last)&& (coord.get_y() + 2 <= 7 && coord.get_x() - 1 >= 0)) return true;
+    if ((TCoord(coord.get_y() + 2, coord.get_x() + 1) == coord_last)&& (coord.get_y() + 2 <= 7 && coord.get_x() + 1 <= 7)) return true;
+    return false;
+};
+TCoordMass& TKnight::get_list_coord() {
+    TCoordMass* mass = new TCoordMass;//перебор вариантов
+    if (coord.get_y() - 2 >= 0 && coord.get_x() - 1 >= 0) { mass->add_coord(coord.get_y() - 2, coord.get_x() - 1); }
+    if (coord.get_y() - 2 >= 0 && coord.get_x() + 1 <= 7) { mass->add_coord(coord.get_y() - 2, coord.get_x() + 1); }
+    if (coord.get_y() - 1 >= 0 && coord.get_x() + 2 <= 7) { mass->add_coord(coord.get_y() - 1, coord.get_x() + 2); }
+    if (coord.get_y() + 1 <= 7 && coord.get_x() + 2 <= 7) { mass->add_coord(coord.get_y() + 1, coord.get_x() + 2); }
+    if (coord.get_y() - 1 >= 0 && coord.get_x() - 2 >= 0) { mass->add_coord(coord.get_y() - 1, coord.get_x() - 2); }
+    if (coord.get_y() + 1 <= 7 && coord.get_x() - 2 >= 0) { mass->add_coord(coord.get_y() + 1, coord.get_x() - 2); }
+    if (coord.get_y() + 2 <= 7 && coord.get_x() - 1 >= 0) { mass->add_coord(coord.get_y() + 2, coord.get_x() - 1); }
+    if (coord.get_y() + 2 <= 7 && coord.get_x() + 1 <= 7) { mass->add_coord(coord.get_y() + 2, coord.get_x() + 1); }
+    return *mass;
+};
+void TKnight::move_to(TCoord& coord_last) {
+    coord.set_x(coord_last.get_x());
+    coord.set_y(coord_last.get_y());
+}
 //класс механик игры, содержит в себе массмв фигур, и методы с обработкой механик игры
 class TGame {
     TFigure_mass mass;
@@ -406,10 +518,10 @@ int main()
 {
     //создаем координату
     TCoord s;
-    s.set_y(1);
-    s.set_x(1);
+    s.set_y(0);
+    s.set_x(0);
     //вызывается конструктор TPawn::TPawn(short int _id, TCoord _coord, TFigure_color _color)
-    TPawn t(1, s, withe);
+    TKnight t(1, s, withe);
     //меняем координату
     s.set_x(1);
     s.set_y(4);
