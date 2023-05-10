@@ -1,5 +1,4 @@
 ﻿#include <iostream>
-
 using namespace std;
 //блок с кодировками цвета текста в консли
 #define RESET "\033[0m"
@@ -9,13 +8,10 @@ using namespace std;
 #define ORANGE "\033[33m"
 #define BLUE "\033[34m"
 
-
 //перечисление какие фигуры у нас есть.
-enum TFigure_type { pawn, rook, knight, bishop, queen, king };//пешка, ладья, конь, слон, королева, король
+enum TFigure_type { no_type, pawn, rook, knight, bishop, queen, king };//пешка, ладья, конь, слон, королева, король
 enum TFigure_color { no_color, black, white };//цвет фигуры
 enum ELogic_error { invalid_index };//Возможные ошибки
-
-
 
 //Класс координат
 class TCoord {
@@ -57,8 +53,6 @@ ostream& operator<<(ostream& os, const TCoord& coord) {
     return os;
 }
 
-
-
 //массив координат, координату в него можно добавлять с помощю add_cooия новойrd(), кула вы передаете
 //или координаты x,y по отдельности либо обьктом TCoord. Сейчас функционала у него нет, но потом он появится.
 //на данном этапе вам нужна только функции добавления новой координаты
@@ -67,43 +61,15 @@ private:
     short int count;
     TCoord* mass;
 public:
-    int get_count() { return count; }
-    void add_coord(TCoord& _tmp) { add_coord(_tmp.get_x(), _tmp.get_y()); }
-    void add_coord(short int x, short int y) {
-        TCoord* tmp_mass = new TCoord[count + 1];
-        for (short int i = 0; i < count; i++) { tmp_mass[i] = mass[i]; }
-        tmp_mass[count].set_x(x);
-        tmp_mass[count].set_y(y);
-        delete[] mass;
-        mass = tmp_mass;
-        count++;
-    }
-    void print() {
-        for (int i = 0; i < count; i++) {
-            cout << "X: " << mass[i].get_x() << "Y: " << mass[i].get_y() << endl;
-        }
-    }
-    TCoordMass() { mass = nullptr; count = 0; }
-    TCoordMass(TCoordMass& tmp) {
-        mass = new TCoord[tmp.count];
-        count = tmp.count;
-        for (int i = 0; i < tmp.count; i++) {
-            mass[i] = tmp.mass[i];
-        }
-    }
+    int get_count();
+    void add_coord(TCoord& _tmp);
+    void add_coord(short int x, short int y);
+    void print();
+    TCoordMass();
+    TCoordMass(TCoordMass& tmp);
     ~TCoordMass() { delete[] mass; }
-    TCoord operator[](int i) {
-        if (i >= 0 && i < count)
-            return mass[i]; else throw invalid_index;
-    }
-    TCoordMass& operator=(const TCoordMass& tmp) {
-        delete[]mass;
-        mass = new TCoord[tmp.count];
-        count = tmp.count;
-        for (int i = 0; i < tmp.count; i++) {
-            mass[i] = tmp.mass[i];
-        }
-    }
+    TCoord operator[](int i);
+    TCoordMass& operator=(const TCoordMass& tmp);
     friend ostream& operator<<(ostream& os, const TCoordMass& coord_mass);
 };
 ostream& operator<<(ostream& os, const TCoordMass& coord_mass) {
@@ -115,8 +81,43 @@ ostream& operator<<(ostream& os, const TCoordMass& coord_mass) {
     }
     return os;
 }
-
-
+int TCoordMass::get_count() { return count; }
+void TCoordMass::add_coord(TCoord& _tmp) { add_coord(_tmp.get_x(), _tmp.get_y()); }
+void TCoordMass::print() {
+    for (int i = 0; i < count; i++) {
+        cout << "X: " << mass[i].get_x() << "Y: " << mass[i].get_y() << endl;
+    }
+}
+void TCoordMass::add_coord(short int x, short int y) {
+    TCoord* tmp_mass = new TCoord[count + 1];
+    for (short int i = 0; i < count; i++) { tmp_mass[i] = mass[i]; }
+    tmp_mass[count].set_x(x);
+    tmp_mass[count].set_y(y);
+    delete[] mass;
+    mass = tmp_mass;
+    count++;
+}    
+TCoordMass::TCoordMass() { mass = nullptr; count = 0; }
+TCoordMass::TCoordMass(TCoordMass& tmp) {
+    mass = new TCoord[tmp.count];
+    count = tmp.count;
+    for (int i = 0; i < tmp.count; i++) {
+        mass[i] = tmp.mass[i];
+    }
+}
+TCoord TCoordMass::operator[](int i) {
+    if (i >= 0 && i < count)
+        return mass[i]; else throw invalid_index;
+}
+TCoordMass& TCoordMass::operator=(const TCoordMass& tmp) {
+    delete[]mass;
+    mass = new TCoord[tmp.count];
+    count = tmp.count;
+    for (int i = 0; i < tmp.count; i++) {
+        mass[i] = tmp.mass[i];
+    }
+    return *this;
+}
 
 //класс - общий предок всех фигур, нужен для того чтобы хранить все фигуры в одном массиве.
 class TFigure {
@@ -126,19 +127,42 @@ protected:
     TCoord coord;//координата фигуры, если фигура съедена - (-1,-1)
     TFigure_color color;//цвет фигуры
 public:
-    TCoord get_coord() { return coord; }
-    TFigure_type get_figure_type() { return type; }
-    TFigure_color get_figure_color() { return color; }
+    TCoord get_coord();
+    TFigure_type get_figure_type();
+    TFigure_color get_figure_color();
+private:
     virtual TCoordMass& get_list_coord() = 0;
     virtual bool check_move(TCoord& coord_last) = 0;
     virtual void move_to(TCoord& coord_last) = 0;
-    TFigure() {}
-    TFigure(TFigure& tmp) {}
-    TFigure(short int _id, TCoord _coord, TFigure_color _color) {}
+public:
+    TFigure();
+    TFigure(TFigure& tmp);
+    TFigure(short int _id, TCoord _coord, TFigure_color _color);
     ~TFigure() {}
+    friend class TGame;
 };
-
-
+TCoord TFigure::get_coord() { return coord; }
+TFigure_type TFigure::get_figure_type() { return type; }
+TFigure_color TFigure::get_figure_color() { return color; }
+TFigure::TFigure() {
+    id = -1;
+    type = no_type;
+    coord.set_x(-1);
+    coord.set_y(-1);
+    color = no_color;
+}
+TFigure::TFigure(TFigure& tmp) {
+    coord = tmp.coord;
+    type = tmp.type;
+    id = tmp.id;
+    color = tmp.color;
+}
+TFigure::TFigure(short int _id, TCoord _coord, TFigure_color _color) {
+    id = _id;
+    coord = _coord;
+    color = _color;
+    type = no_type;
+}
 
 //Класс пешка
 class TPawn :public TFigure {
@@ -197,13 +221,10 @@ bool TPawn::check_move(TCoord& coord_last) {
 TCoordMass& TPawn::get_list_coord() {
     TCoordMass* mass;
     mass = new TCoordMass;
-    //cout << endl << "function out: get_list_coord" << endl;
     if (color == white) {
         if (coord.get_y() == 1) {
             mass->add_coord(coord.get_x(), coord.get_y() + 1);
             mass->add_coord(coord.get_x(), coord.get_y() + 2);
-            //cout<< "X: "<<coord.get_x()<<"\tY: "<<coord.get_y()+1 <<endl;
-            //cout<< "X: "<<coord.get_x()<<"\tY: "<<coord.get_y()+2 <<endl;
         }
         else {
             if (coord.get_y() == 7) {
@@ -211,7 +232,6 @@ TCoordMass& TPawn::get_list_coord() {
             }
             else {
                 mass->add_coord(coord.get_x(), coord.get_y() + 1);
-                //cout << "X: " << coord.get_x() << "\tY: " << coord.get_y() + 1 << endl;
             }
         }
     }
@@ -219,15 +239,12 @@ TCoordMass& TPawn::get_list_coord() {
         if (coord.get_y() == 6) {
             mass->add_coord(coord.get_x(), coord.get_y() - 1);
             mass->add_coord(coord.get_x(), coord.get_y() - 2);
-            //cout << "X: " << coord.get_x() << "\tY: " << coord.get_y() - 1 << endl;
-            //cout << "X: " << coord.get_x() << "\tY: " << coord.get_y() - 2 << endl;
         }
         else {
             if (coord.get_y() == 0) {
 
             }
             else {
-                //cout << "X: " << coord.get_x() << "\tY: " << coord.get_y() - 1 << endl;
                 mass->add_coord(coord.get_x(), coord.get_y() - 1);
             }
         }
@@ -237,8 +254,6 @@ TCoordMass& TPawn::get_list_coord() {
     //cout << "function: get_list_coord - END" << endl;
     return *mass;
 }
-
-
 
 //Класс король
 class TKing :public TFigure {
@@ -290,7 +305,6 @@ TCoordMass& TKing::get_list_coord() {
                 int tmp_x = coord.get_x() + i, tmp_y = coord.get_y() + j;
                 if (tmp_x >= 0 && tmp_x < 8 && tmp_y >= 0 && tmp_y < 8) {
                     mass->add_coord(tmp_x, tmp_y);
-                    //cout << "X: " << tmp_x << "\tY: " << tmp_y << endl;
                 }
             }
         }
@@ -299,15 +313,13 @@ TCoordMass& TKing::get_list_coord() {
     return *mass;
 }
 
-
-
 //Класс королева
 class TQueen :public TFigure {
 public:
     TQueen(short int _id, TCoord _coord, TFigure_color _color);
     TQueen();
     TQueen(TQueen& tmp);
-    ~TQueen() {};//деструктор
+    ~TQueen() {}
     TCoordMass& get_list_coord();
     bool check_move(TCoord& coord_last);
     void move_to(TCoord& coord_last);
@@ -362,18 +374,16 @@ void TQueen::move_to(TCoord& coord_last) {
     coord.set_y(coord_last.get_y());
 }
 
-
-
 //Класс ладья
 class TRook :public TFigure {
 public:
-    TRook();//конструктор по умолчанию
-    TRook(TRook& tmp);//конструктор копирования
+    TRook();
+    TRook(TRook& tmp);
     TRook(short int _id, TCoord _coord, TFigure_color _color);
-    ~TRook() {};//деструктор
-    TCoordMass& get_list_coord();//возвращает список координат, куда фигура может сдвинуться, начальные координаты берет от свего обьекта.
-    bool check_move(TCoord& coord_last);//возвращает true если фигура может передвинуться на переданные координаты.
-    void move_to(TCoord& coord_last);//пердвигает фигуру на переданные координаты без проверки(просто меняет свое поле TCoord). 
+    ~TRook() {}
+    TCoordMass& get_list_coord();
+    bool check_move(TCoord& coord_last);
+    void move_to(TCoord& coord_last);
 };
 TRook::TRook(TRook& tmp) {
     type = rook;
@@ -422,14 +432,13 @@ TCoordMass& TRook::get_list_coord() {
     return *mass;
 }
 
-
-
 //Класс слон
 class TBishop :public TFigure {
 public:
     TBishop(short int _id, TCoord _coord, TFigure_color _color);
     TBishop();
     TBishop(TBishop& tmp);
+    ~TBishop() {}
     TCoordMass& get_list_coord();
     bool check_move(TCoord& coord_last);
     void move_to(TCoord& coord_last);
@@ -477,19 +486,17 @@ void TBishop::move_to(TCoord& coord_last) {
     coord.set_y(coord_last.get_y());
 }
 
-
-
 //Класс конь
 class TKnight :public TFigure {
 public:
     TKnight(short int _id, TCoord _coord, TFigure_color _color);
-    TKnight();//конструктор по умолчанию
-    TKnight(TKnight& tmp);//конструктор копирования
-    ~TKnight() {};//деструктор
+    TKnight();
+    TKnight(TKnight& tmp);
+    ~TKnight() {}
 
-    TCoordMass& get_list_coord();//возвращает список координат, куда фигура может сдвинуться, начальные координаты берет от свего обьекта.
-    bool check_move(TCoord& coord_last);//возвращает true если фигура может передвинуться на переданные координаты.
-    void move_to(TCoord& coord_last);//пердвигает фигуру на переданные координаты без проверки(просто меняет свое поле TCoord). 
+    TCoordMass& get_list_coord();
+    bool check_move(TCoord& coord_last);
+    void move_to(TCoord& coord_last);
 };
 TKnight::TKnight(TKnight& tmp) {
     type = knight;
@@ -544,6 +551,9 @@ void TKnight::move_to(TCoord& coord_last) {
 
 
 
+
+
+
 /*Массив фигур, нужен для корректной работы всех механизмов в классе TGame.
 Должен содержать в себе перегрузки индексации, = , и другие, которые понадобятся в классе TGame
 Он организует быстрый и удобный доступ к фигурам по координатам и по индексу,
@@ -557,7 +567,9 @@ public:
     TFigure* operator[](TCoord coord);
     void add_figure(TFigure* figure);
     TFigure_mass();
+    ~TFigure_mass();
 };
+TFigure_mass::~TFigure_mass() {};//доделать
 TFigure* TFigure_mass::operator[](int i) {
     if (i >= 0 && i < count) return mass[i];
     else throw invalid_index;
@@ -630,11 +642,7 @@ TFigure_mass::TFigure_mass() {
     coord.set_x(4);
     mass[31] = new TKing(31, coord, black);
 }
-
-
-
-
-
+//конструктор копиррования и деструктор дописать
 
 //класс механик игры, содержит в себе массмв фигур, и методы с обработкой механик игры
 class TGame {
