@@ -1,7 +1,7 @@
 Краткий гайд о работе в команде на github
 1) создаем репозитори и добавляем в него нужные файлы.
 git init
-git romoute add origin <site>(site – ссылка на ваш гитхаб)
+git remote add origin <site>(site – ссылка на ваш гитхаб)
 git checout -b <ветка> (в нашем случае ветка разработки<development>)
 git add . 
 git commit -m “first commit”
