@@ -196,6 +196,7 @@ public:
     void add_move(short int _id, TCoord first, TCoord last);
     void delete_last_pos(short int _count);
     void delete_history(short int _count);
+    THistory& operator=(const THistory& tmp);
 };
 
 //класс механик игры, содержит в себе массмв фигур, и методы с обработкой механик игры
