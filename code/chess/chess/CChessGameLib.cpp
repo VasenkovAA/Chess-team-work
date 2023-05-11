@@ -422,7 +422,9 @@ void TKnight::move_to(TCoord coord_last) {
     coord.set_y(coord_last.get_y());
 }
 
-TFigure_mass::~TFigure_mass() {};//доделать
+TFigure_mass::~TFigure_mass() {
+    delete [] mass; //если будут ошибки - удалить "[]" или одельно вызывай деструктор
+};
 TFigure* TFigure_mass::operator[](int i) {
     if (i >= 0 && i < count) return mass[i];
     else throw logic_error("i - index beyond possible values");
@@ -577,6 +579,13 @@ THistory::~THistory() {
     }
     delete[] mass;
 }
+THistory& THistory::operator = (const THistory &tmp){
+    count = tmp.count;
+    mass =new TMove * [count];
+    for (short int i = 0; i < count; i++) {
+        mass[i] = new TMove(*tmp.mass[i]);
+    }
+}
 
 TGame::TGame(TGame& tmp) {
     //mass = tmp.mass; нет перегрузки = для TFigure_mass, добавть.
@@ -586,7 +595,6 @@ TGame::TGame(TGame& tmp) {
 TGame::TGame() {
     move_count = 0;
 }
-
 void TGame::move(TCoord first_coord, TCoord last_coord) {
     if (check_possibility_move(first_coord, last_coord)) {
         //history.add_coord(first_coord);
