@@ -25,6 +25,7 @@ public:
     short int get_y();
     TCoord& operator=(const TCoord& tmp);
     bool operator==(const TCoord& tmp) const;
+    bool operator!=(const TCoord& tmp) const;
     TCoord(short int _x, short int _y);
     TCoord() :x(-1), y(-1) {};
     friend ostream& operator<<(ostream& os, const TCoord& coord);
@@ -40,6 +41,9 @@ TCoord& TCoord::operator=(const TCoord& tmp) {
 }
 bool TCoord::operator==(const TCoord& tmp) const {
     return ((x == tmp.x) && (y == tmp.y));
+}
+bool TCoord::operator!=(const TCoord& tmp) const {
+    return ((x != tmp.x) || (y != tmp.y));
 }
 TCoord::TCoord(short int _x, short int _y) {
     if (_x < 8 && _x > -2 && _y > -2 && _y < 8) {
@@ -639,6 +643,82 @@ TFigure_mass::TFigure_mass() {
 }
 //конструктор копиррования и деструктор дописать
 
+//один ход
+class TMove {
+    short int id;
+    TCoord first_coord;
+    TCoord last_coord;
+    friend class THistory;
+public:
+    TMove();
+    TMove(TMove& tmp);
+    TMove(short int _id, TCoord first, TCoord last);
+    ~TMove() {}
+};
+TMove::TMove() {
+    first_coord = TCoord(-1, -1);
+    last_coord = TCoord(-1, -1);
+    id = -1;
+}
+TMove::TMove(TMove& tmp) {
+    last_coord = tmp.last_coord;
+    first_coord = tmp.first_coord;
+    id = tmp.id;
+}
+TMove::TMove(short int _id, TCoord first, TCoord last) {
+    if (first != last && _id > -1 && first != TCoord(-1, -1)) {
+        first_coord = first;
+        last_coord = last;
+        id = _id;
+    }
+    else throw invalid_index;
+}
+//история ходов
+class THistory {
+    TMove** mass;
+    short int count;
+public:
+    THistory();
+    THistory(THistory&tmp);
+    ~THistory();
+    short int get_count();
+    TMove get_move(short int index);
+    TMove get_last_move();
+    TMove operator[](int i);
+    void add_move(short int _id, TCoord first, TCoord last);
+    void delete_last_pos(short int _count);
+    void delete_history(short int _count);
+};
+void THistory::add_move(short int _id, TCoord first, TCoord last) {
+    count++;;
+    TMove ** tmp_mass = new TMove * [count];
+    for (int i = 0; i < count-1; i++) {
+        tmp_mass[i] = new TMove(mass[i]->id, mass[i]->first_coord, mass[i]->last_coord);
+    }
+    tmp_mass[count - 1] = new TMove(_id, first, last);
+    for (short int i = 0; i < count-1; i++) {
+        mass[i]->~TMove();
+    }
+    delete[] mass;
+    mass = tmp_mass;
+}
+THistory::THistory() {
+    mass = nullptr;
+    count = 0;
+}
+THistory::THistory(THistory& tmp) {
+    count = tmp.count;
+    mass = new TMove * [count];
+    for (int i = 0; i < count; i++) {
+        mass[i] = new TMove(tmp.mass[i]->id, tmp.mass[i]->first_coord, tmp.mass[i]->last_coord);
+    }
+}
+THistory::~THistory() {
+    for (short int i = 0; i < count; i++) {
+        mass[i]->~TMove();
+    }
+    delete [] mass;
+}
 //класс механик игры, содержит в себе массмв фигур, и методы с обработкой механик игры
 class TGame {
     TFigure_mass mass;
@@ -787,23 +867,27 @@ bool TGame::check_possibility_move(TCoord first_coord, TCoord last_coord) {
 //В данный момент в main код для проверки правильности работы вашей фигуры
 int main()
 {
-    //создаем координату
-    TCoord s;
-    s.set_y(0);
-    s.set_x(0);
-    //вызывается конструктор TPawn::TPawn(short int _id, TCoord _coord, TFigure_color _color)
-    //TPawn t1(1, s, white);
-    TKnight t2(1, s, white);
-    //меняем координату
-    s.set_x(1);
-    s.set_y(2);
-    //проверка может ли фигура сходить на новую координату
-    if (t2.check_move(s)) { cout << "First test: " << "TRUE TEST, check_move return true " << endl; }
-    else { cout << "First test: " << "FALSE TEST, check_move return false " << endl; }
-    //вывод списка координату куда она может сходить
-    //TCoordMass mass_tmp = t1.get_list_coord();
-    //mass_tmp.print();
-    //cout << mass_tmp << endl;
-    //std::cout << "Hello World!\n";
-    //
+    THistory t;
+    t.add_move(1,TCoord(5,2), TCoord(5, 7) );
+    t.add_move(1, TCoord(5, 2), TCoord(5, 7));
+    t.add_move(1, TCoord(5, 2), TCoord(5, 7));
+    ////создаем координату
+    //TCoord s;
+    //s.set_y(0);
+    //s.set_x(0);
+    ////вызывается конструктор TPawn::TPawn(short int _id, TCoord _coord, TFigure_color _color)
+    ////TPawn t1(1, s, white);
+    //TKnight t2(1, s, white);
+    ////меняем координату
+    //s.set_x(1);
+    //s.set_y(2);
+    ////проверка может ли фигура сходить на новую координату
+    //if (t2.check_move(s)) { cout << "First test: " << "TRUE TEST, check_move return true " << endl; }
+    //else { cout << "First test: " << "FALSE TEST, check_move return false " << endl; }
+    ////вывод списка координату куда она может сходить
+    ////TCoordMass mass_tmp = t1.get_list_coord();
+    ////mass_tmp.print();
+    ////cout << mass_tmp << endl;
+    ////std::cout << "Hello World!\n";
+    ////
 }
