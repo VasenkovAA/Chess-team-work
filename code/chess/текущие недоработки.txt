@@ -1,2 +1,6 @@
 TCoordMass history; //в классе TGame доработать, не готово
 class TFigure_mass; //конструктор копиррования и деструктор дописать
+TGame(TGame& tmp) TFigure_mass= tmp.TFigure_mass; нет перегрузки = для TFigure_mass, добавть.
+class TGame // добавить функцию взятия на проходе take_on_pass
+class TGame TCoordMass history; //доработать, не готово
+проверить наличие проверок на самоприсваивание в фигурах

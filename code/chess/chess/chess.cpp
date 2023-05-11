@@ -132,8 +132,8 @@ public:
     TFigure_color get_figure_color();
 private:
     virtual TCoordMass& get_list_coord() = 0;
-    virtual bool check_move(TCoord& coord_last) = 0;
-    virtual void move_to(TCoord& coord_last) = 0;
+    virtual bool check_move(TCoord coord_last) = 0;
+    virtual void move_to(TCoord coord_last) = 0;
 public:
     TFigure();
     TFigure(TFigure& tmp);
@@ -173,8 +173,8 @@ public:
     ~TPawn() {}
 
     TCoordMass& get_list_coord();
-    bool check_move(TCoord& coord_last);
-    void move_to(TCoord& coord_last);
+    bool check_move(TCoord coord_last);
+    void move_to(TCoord coord_last);
 };
 TPawn::TPawn() {
     id = -1;
@@ -197,11 +197,11 @@ TPawn::TPawn(TPawn& tmp) {
     coord.set_y(tmp.coord.get_y());
     color = tmp.color;
 }
-void TPawn::move_to(TCoord& coord_last) {
+void TPawn::move_to(TCoord coord_last) {
     coord.set_x(coord_last.get_x());
     coord.set_y(coord_last.get_y());
 }
-bool TPawn::check_move(TCoord& coord_last) {
+bool TPawn::check_move(TCoord coord_last) {
     if (color == black) {
         if ((coord.get_y() - 1 == coord_last.get_y() && (coord.get_x() == coord_last.get_x()))) { return 1; }
         else
@@ -264,8 +264,8 @@ public:
     ~TKing() {};//деструктор
 
     TCoordMass& get_list_coord();//возвращает список координат, куда фигура может сдвинуться, начальные координаты берет от свего обьекта.
-    bool check_move(TCoord& coord_last);//возвращает true если фигура может передвинуться на переданные координаты.
-    void move_to(TCoord& coord_last);//пердвигает фигуру на переданные координаты без проверки(просто меняет свое поле TCoord). 
+    bool check_move(TCoord coord_last);//возвращает true если фигура может передвинуться на переданные координаты.
+    void move_to(TCoord coord_last);//пердвигает фигуру на переданные координаты без проверки(просто меняет свое поле TCoord). 
 };
 TKing::TKing(short int _id, TCoord _coord, TFigure_color _color) {
     type = king;
@@ -288,11 +288,11 @@ TKing::TKing() {
     coord.set_x(-1);
     coord.set_y(-1);
 }
-void TKing::move_to(TCoord& coord_last) {
+void TKing::move_to(TCoord coord_last) {
     coord.set_x(coord_last.get_x());
     coord.set_y(coord_last.get_y());
 }
-bool TKing::check_move(TCoord& coord_last) {
+bool TKing::check_move(TCoord coord_last) {
     if ((abs(coord_last.get_x() - coord.get_x()) <= 1) && (abs(coord_last.get_y() - coord.get_y()) <= 1)) return true;
     else return 0;
 };
@@ -321,8 +321,8 @@ public:
     TQueen(TQueen& tmp);
     ~TQueen() {}
     TCoordMass& get_list_coord();
-    bool check_move(TCoord& coord_last);
-    void move_to(TCoord& coord_last);
+    bool check_move(TCoord coord_last);
+    void move_to(TCoord coord_last);
 };
 TQueen::TQueen(short int _id, TCoord _coord, TFigure_color _color) {
     type = queen;
@@ -360,7 +360,7 @@ TCoordMass& TQueen::get_list_coord() {
     }
     return *mass;
 }
-bool TQueen::check_move(TCoord& coord_last) {
+bool TQueen::check_move(TCoord coord_last) {
     if (coord_last.get_x() == coord.get_x() || coord_last.get_y() == coord.get_y()) {
         return true;
     }
@@ -369,7 +369,7 @@ bool TQueen::check_move(TCoord& coord_last) {
     }
     else { return false; }
 }
-void TQueen::move_to(TCoord& coord_last) {
+void TQueen::move_to(TCoord coord_last) {
     coord.set_x(coord_last.get_x());
     coord.set_y(coord_last.get_y());
 }
@@ -382,8 +382,8 @@ public:
     TRook(short int _id, TCoord _coord, TFigure_color _color);
     ~TRook() {}
     TCoordMass& get_list_coord();
-    bool check_move(TCoord& coord_last);
-    void move_to(TCoord& coord_last);
+    bool check_move(TCoord coord_last);
+    void move_to(TCoord coord_last);
 };
 TRook::TRook(TRook& tmp) {
     type = rook;
@@ -406,11 +406,11 @@ TRook::TRook(short int _id, TCoord _coord, TFigure_color _color) {
     coord.set_y(_coord.get_y());
     color = _color;
 }
-void TRook::move_to(TCoord& coord_last) {
+void TRook::move_to(TCoord coord_last) {
     coord.set_x(coord_last.get_x());
     coord.set_y(coord_last.get_y());
 }
-bool TRook::check_move(TCoord& coord_last) {
+bool TRook::check_move(TCoord coord_last) {
     if (coord_last.get_x() == coord.get_x() && (coord_last.get_y() > -1) && (coord_last.get_y() != coord.get_y())) return true;
     if (coord_last.get_y() == coord.get_y() && (coord_last.get_x() > -1) && (coord_last.get_x() != coord.get_x())) return true;
     else return false;
@@ -440,8 +440,8 @@ public:
     TBishop(TBishop& tmp);
     ~TBishop() {}
     TCoordMass& get_list_coord();
-    bool check_move(TCoord& coord_last);
-    void move_to(TCoord& coord_last);
+    bool check_move(TCoord coord_last);
+    void move_to(TCoord coord_last);
 };
 TBishop::TBishop(short int _id, TCoord _coord, TFigure_color _color) {
     type = bishop;
@@ -475,13 +475,13 @@ TCoordMass& TBishop::get_list_coord() {
     }
     return *mass;
 }
-bool TBishop::check_move(TCoord& coord_last) {
+bool TBishop::check_move(TCoord coord_last) {
     if (abs(coord.get_x() - coord_last.get_x()) == abs(coord.get_y() - coord_last.get_y())) {
         return true;
     }
     else { return false; }
 }
-void TBishop::move_to(TCoord& coord_last) {
+void TBishop::move_to(TCoord coord_last) {
     coord.set_x(coord_last.get_x());
     coord.set_y(coord_last.get_y());
 }
@@ -495,8 +495,8 @@ public:
     ~TKnight() {}
 
     TCoordMass& get_list_coord();
-    bool check_move(TCoord& coord_last);
-    void move_to(TCoord& coord_last);
+    bool check_move(TCoord coord_last);
+    void move_to(TCoord coord_last);
 };
 TKnight::TKnight(TKnight& tmp) {
     type = knight;
@@ -519,7 +519,7 @@ TKnight::TKnight(short int _id, TCoord _coord, TFigure_color _color) {
     coord.set_y(_coord.get_y());
     color = _color;
 }
-bool TKnight::check_move(TCoord& coord_last) {
+bool TKnight::check_move(TCoord coord_last) {
     TCoord deth_coord(-1, -1);
     if (coord_last == deth_coord) throw invalid_index;
     if ((coord.get_y() - 2 == coord_last.get_y() && coord.get_x() - 1 == coord_last.get_x()) && (coord.get_y() - 2 >= 0 && coord.get_x() - 1 >= 0)) return true;
@@ -544,15 +544,10 @@ TCoordMass& TKnight::get_list_coord() {
     if (coord.get_y() + 2 <= 7 && coord.get_x() + 1 <= 7) { mass->add_coord(coord.get_y() + 2, coord.get_x() + 1); }
     return *mass;
 };
-void TKnight::move_to(TCoord& coord_last) {
+void TKnight::move_to(TCoord coord_last) {
     coord.set_x(coord_last.get_x());
     coord.set_y(coord_last.get_y());
 }
-
-
-
-
-
 
 /*Массив фигур, нужен для корректной работы всех механизмов в классе TGame.
 Должен содержать в себе перегрузки индексации, = , и другие, которые понадобятся в классе TGame
@@ -651,24 +646,27 @@ class TGame {
     TCoordMass history; //доработать, не готово
 public:
     TGame();
-    TGame(TGame& tmp) {
-        //mass = tmp.mass; нет перегрузки = для TFigure_mass, добавть.
-        move_count = tmp.move_count;
-        history = tmp.history;
-    }
+    TGame(TGame& tmp);
     void move(TCoord first_coord, TCoord last_coord);
     void eatten(TFigure* figure);
     bool check_possibility_move(TCoord fitst_coorf, TCoord last_coord);
     void castling();
     bool end_game();
 };
+TGame::TGame(TGame& tmp) {
+    //mass = tmp.mass; нет перегрузки = для TFigure_mass, добавть.
+    move_count = tmp.move_count;
+    history = tmp.history;
+}
 TGame::TGame() {
     move_count = 0;
 }
+
 void TGame::move(TCoord first_coord, TCoord last_coord) {
     if (check_possibility_move(first_coord, last_coord)) {
-        history.add_coord(first_coord);
-        history.add_coord(last_coord);
+        //history.add_coord(first_coord);
+        //history.add_coord(last_coord);
+        // в history пока ничего не пишем.
         move_count += 1;
         mass[first_coord]->move_to(last_coord);
         try {
@@ -679,8 +677,7 @@ void TGame::move(TCoord first_coord, TCoord last_coord) {
     }
 }
 void TGame::eatten(TFigure* figure) {
-    TCoord death(-1, -1);
-    figure->move_to(death);
+    figure->move_to(TCoord(-1, -1));
 }
 bool TGame::check_possibility_move(TCoord first_coord, TCoord last_coord) {
     TFigure* figure_1 = mass[first_coord];
@@ -711,7 +708,8 @@ bool TGame::check_possibility_move(TCoord first_coord, TCoord last_coord) {
                     }
                 }
                 if ((list_coord[i].get_x() - first_coord.get_x()) / difference_x < 1  && 
-                    (list_coord[i].get_x() - first_coord.get_x()) / difference_x == (list_coord[i].get_y() - first_coord.get_y()) / difference_y) {
+                    (list_coord[i].get_x() - first_coord.get_x()) / difference_x == 
+                    (list_coord[i].get_y() - first_coord.get_y()) / difference_y) {
                     try {
                         TFigure* figure_2 = mass[list_coord[i]];
                         return 0;
@@ -743,27 +741,41 @@ bool TGame::check_possibility_move(TCoord first_coord, TCoord last_coord) {
                 return 1;
             }
         }
-        else if (abs(first_coord.get_x() - last_coord.get_x()) == 1 && last_coord.get_y() - first_coord.get_y() == 1 && figure_1->get_figure_color() == white) {
-            try {
-                TFigure* figure_2 = mass[last_coord];
-                return 1;
+        else 
+        {
+            if (abs(first_coord.get_x() - last_coord.get_x()) == 1 &&
+                last_coord.get_y() - first_coord.get_y() == 1 &&
+                figure_1->get_figure_color() == white) {
+                try {
+                    TFigure* figure_2 = mass[last_coord];
+                    return 1;
+                }
+                catch (...) {
+                    return 0;
+                }
             }
-            catch (...) {
-                return 0;
-            }
-        }
-        else if (abs(first_coord.get_x() - last_coord.get_x()) == 1 && last_coord.get_y() - first_coord.get_y() == -1 && figure_1->get_figure_color() == black) {
-            try {
-                TFigure* figure_2 = mass[last_coord];
-                return 1;
-            }
-            catch (...) {
-                return 0;
+            else
+            {
+                if (abs(first_coord.get_x() - last_coord.get_x()) == 1 &&
+                    last_coord.get_y() - first_coord.get_y() == -1 &&
+                    figure_1->get_figure_color() == black) {
+                    try {
+                        TFigure* figure_2 = mass[last_coord];
+                        return 1;
+                    }
+                    catch (...) {
+                        return 0;
+                    }
+                }
             }
         }
     }
 
 }
+
+
+
+
 
 
 
