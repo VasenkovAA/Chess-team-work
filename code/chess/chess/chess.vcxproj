@@ -127,7 +127,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="CChessGameLib.cpp" />
     <ClCompile Include="chess.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="CChessGameLib.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
