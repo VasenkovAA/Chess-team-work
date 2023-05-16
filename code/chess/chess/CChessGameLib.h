@@ -210,6 +210,12 @@ public:
     void move(TCoord first_coord, TCoord last_coord);
     void eatten(TFigure* figure);
     bool check_possibility_move(TCoord fitst_coorf, TCoord last_coord);
-    void castling();
+    void take_on_pass(TFigure* pawn);
+    void castling(TFigure* king);
+    void transform(TFigure* pawn, TFigure* figure);
+    bool check_take_on_pass(TFigure* pawn);
+    bool check_castling(TFigure* king);
+    bool checkmate();
+    bool check_transform(TFigure* pawn, TFigure* figure);
     bool end_game();
 };

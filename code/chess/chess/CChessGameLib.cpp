@@ -268,9 +268,8 @@ TCoordMass& TQueen::get_list_coord() {
     return *mass;
 }
 bool TQueen::check_move(TCoord coord_last) {
-    if (coord_last.get_x() == coord.get_x() || coord_last.get_y() == coord.get_y()) {
-        return true;
-    }
+    if (coord_last == coord) { return false; }
+    if (coord_last.get_x() == coord.get_x() || coord_last.get_y() == coord.get_y()) { return true; }
     else if (abs(coord.get_x() - coord_last.get_x()) == abs(coord.get_y() - coord_last.get_y())) {
         return true;
     }
@@ -361,6 +360,7 @@ TCoordMass& TBishop::get_list_coord() {
     return *mass;
 }
 bool TBishop::check_move(TCoord coord_last) {
+    if (coord_last == coord) { return false; }
     if (abs(coord.get_x() - coord_last.get_x()) == abs(coord.get_y() - coord_last.get_y())) {
         return true;
     }
@@ -611,6 +611,21 @@ void TGame::move(TCoord first_coord, TCoord last_coord) {
 }
 void TGame::eatten(TFigure* figure) {
     figure->move_to(TCoord(-1, -1));
+}
+void TGame::take_on_pass(TFigure* pawn);
+void TGame::castling(TFigure* king, TFigure* rook) {
+    
+}
+//void TGame::transform(TFigure* pawn, TFigure* figure);
+bool TGame::check_take_on_pass(TFigure* pawn);
+bool TGame::check_castling(TFigure* king) {
+    //if(проверка на то, что король и ладья не ходили){return false;}
+    
+
+}
+bool TGame::check_transform(TFigure* pawn, TFigure* figure);
+bool TGame::checkmate() {
+
 }
 bool TGame::check_possibility_move(TCoord first_coord, TCoord last_coord) {
     TFigure* figure_1 = mass[first_coord];
