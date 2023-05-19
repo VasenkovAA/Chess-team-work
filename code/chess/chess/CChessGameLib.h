@@ -166,6 +166,7 @@ public:
     void add_figure(TFigure* figure);
     TFigure_mass();
     ~TFigure_mass();
+    friend class TGame;
 };
 
 //один ход
@@ -203,19 +204,26 @@ public:
 class TGame {
     TFigure_mass mass;
     short int move_count;
-    TCoordMass history; //доработать, не готово
+    THistory history; //доработать, не готово
 public:
     TGame();
     TGame(TGame& tmp);
-    void move(TCoord first_coord, TCoord last_coord);
+    bool found_figure(TCoord coord);
+    void move(TFigure* figure, TCoord last_coord);
     void eatten(TFigure* figure);
-    bool check_possibility_move(TCoord fitst_coorf, TCoord last_coord);
+    bool check_possibility_move(TFigure* figure, TCoord last_coord);
+    bool check_possibility_move_pawn(TFigure* figure, TCoord last_coord);
+    bool check_possibility_move_king(TFigure* figure, TCoord last_coord);
+    bool check_possibility_move_queen(TFigure* figure, TCoord last_coord);
+    bool check_possibility_move_bishop(TFigure* figure, TCoord last_coord);
+    bool check_possibility_move_rook(TFigure* figure, TCoord last_coord);
+    bool check_possibility_move_knight(TFigure* figure, TCoord last_coord);
     void take_on_pass(TFigure* pawn);
     void castling(TFigure* king);
     void transform(TFigure* pawn, TFigure* figure);
     bool check_take_on_pass(TFigure* pawn);
     bool check_castling(TFigure* king);
     bool checkmate();
-    bool check_transform(TFigure* pawn, TFigure* figure);
+    bool check_transform(TFigure* pawn);
     bool end_game();
 };
