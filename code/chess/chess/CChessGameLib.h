@@ -174,11 +174,13 @@ class TMove {
     short int id;
     TCoord first_coord;
     TCoord last_coord;
+    TFigure* figure;
     friend class THistory;
+    friend class TGame;
 public:
     TMove();
     TMove(TMove& tmp);
-    TMove(short int _id, TCoord first, TCoord last);
+    TMove(short int _id, TCoord first, TCoord last, TFigure* _figure);
     ~TMove() {}
 };
 
@@ -192,9 +194,10 @@ public:
     ~THistory();
     short int get_count();
     TMove get_move(short int index);
+    TMove get_move(TFigure* figure);
     TMove get_last_move();
     TMove operator[](int i);
-    void add_move(short int _id, TCoord first, TCoord last);
+    void add_move(short int _id, TCoord first, TCoord last, TFigure* figure);
     void delete_last_pos(short int _count);
     void delete_history(short int _count);
     THistory& operator=(const THistory& tmp);
@@ -209,7 +212,8 @@ public:
     TGame();
     TGame(TGame& tmp);
     bool found_figure(TCoord coord);
-    void move(TFigure* figure, TCoord last_coord);
+    bool found_move(TFigure* figure);
+    void move(TCoord first_coord, TCoord last_coord);
     void eatten(TFigure* figure);
     bool check_possibility_move(TFigure* figure, TCoord last_coord);
     bool check_possibility_move_pawn(TFigure* figure, TCoord last_coord);
@@ -219,10 +223,10 @@ public:
     bool check_possibility_move_rook(TFigure* figure, TCoord last_coord);
     bool check_possibility_move_knight(TFigure* figure, TCoord last_coord);
     void take_on_pass(TFigure* pawn);
-    void castling(TFigure* king);
+    void castling(TFigure* king, TCoord last_coord);
     void transform(TFigure* pawn, TFigure* figure);
     bool check_take_on_pass(TFigure* pawn);
-    bool check_castling(TFigure* king);
+    bool check_castling(TFigure* king, TCoord last_coord);
     bool checkmate();
     bool check_transform(TFigure* pawn);
     bool end_game();

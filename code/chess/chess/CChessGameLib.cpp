@@ -504,17 +504,20 @@ TMove::TMove() {
     first_coord = TCoord(-1, -1);
     last_coord = TCoord(-1, -1);
     id = -1;
+    figure = nullptr;
 }
 TMove::TMove(TMove& tmp) {
     last_coord = tmp.last_coord;
     first_coord = tmp.first_coord;
     id = tmp.id;
+    figure = tmp.figure;
 }
-TMove::TMove(short int _id, TCoord first, TCoord last) {
+TMove::TMove(short int _id, TCoord first, TCoord last, TFigure* _figure) {
     if (first != last && _id > -1 && first != TCoord(-1, -1)) {
         first_coord = first;
         last_coord = last;
         id = _id;
+        figure = _figure;
     }
     else throw logic_error("i - index beyond possible values");
 }
@@ -528,6 +531,14 @@ TMove THistory::get_move(short int index) {
     if (index > -1 && index < count)
         return *mass[index]; else throw logic_error("i - index beyond possible values");
 }
+TMove THistory::get_move(TFigure* figure) {
+    for (int i = 0; i < count; i++) {
+        if (mass[i]->figure == figure) {
+            return *mass[i];
+        }
+    }
+    throw logic_error("This figure didn't moved");
+}
 TMove THistory::operator[](int i) {
     if (i > -1 && i < count) return *mass[i]; else throw logic_error("i - index beyond possible values");
 }
@@ -535,7 +546,7 @@ void THistory::delete_last_pos(short int _count) {
     count--;;
     TMove** tmp_mass = new TMove * [count];
     for (int i = 0; i < count; i++) {
-        tmp_mass[i] = new TMove(mass[i]->id, mass[i]->first_coord, mass[i]->last_coord);
+        tmp_mass[i] = new TMove(mass[i]->id, mass[i]->first_coord, mass[i]->last_coord, mass[i]->figure);
     }
     for (short int i = 0; i < count + 1; i++) {
         mass[i]->~TMove();
@@ -550,13 +561,13 @@ void THistory::delete_history(short int _count) {
     delete[] mass;
     count = 0;
 }
-void THistory::add_move(short int _id, TCoord first, TCoord last) {
+void THistory::add_move(short int _id, TCoord first, TCoord last, TFigure* _figure) {
     count++;;
     TMove** tmp_mass = new TMove * [count];
     for (int i = 0; i < count - 1; i++) {
-        tmp_mass[i] = new TMove(mass[i]->id, mass[i]->first_coord, mass[i]->last_coord);
+        tmp_mass[i] = new TMove(mass[i]->id, mass[i]->first_coord, mass[i]->last_coord, mass[i]->figure);
     }
-    tmp_mass[count - 1] = new TMove(_id, first, last);
+    tmp_mass[count - 1] = new TMove(_id, first, last, _figure);
     for (short int i = 0; i < count - 1; i++) {
         mass[i]->~TMove();
     }
@@ -571,7 +582,7 @@ THistory::THistory(THistory& tmp) {
     count = tmp.count;
     mass = new TMove * [count];
     for (int i = 0; i < count; i++) {
-        mass[i] = new TMove(tmp.mass[i]->id, tmp.mass[i]->first_coord, tmp.mass[i]->last_coord);
+        mass[i] = new TMove(tmp.mass[i]->id, tmp.mass[i]->first_coord, tmp.mass[i]->last_coord, mass[i]->figure);
     }
 }
 THistory::~THistory() {
@@ -594,7 +605,7 @@ TGame::TGame(TGame& tmp) {
     history = tmp.history;
 }
 TGame::TGame() {
-    move_count = 0;
+    move_count = 1;
 }
 bool TGame::found_figure(TCoord coord) {
     try {
@@ -605,54 +616,85 @@ bool TGame::found_figure(TCoord coord) {
         return 0;
     }
 }
-void TGame::move(TFigure* figure, TCoord last_coord) {
-    if (check_possibility_move(figure, last_coord)) {
-        //history.add_coord(first_coord);
-        //history.add_coord(last_coord);
-        // в history пока ничего не пишем.
-        move_count += 1;
-        figure->move_to(last_coord);
-        try {
-            TFigure* figure = mass[last_coord];
-            eatten(figure);
+bool TGame::found_move(TFigure* figure) {
+    try {
+        history.get_move(figure);
+        return 1;
+    }
+    catch (...) {
+        return 0;
+    }
+}
+void TGame::move(TCoord first_coord, TCoord last_coord) {
+    if (found_figure(first_coord) && 
+        ((move_count % 2 == 1 && mass[first_coord]->get_figure_color() == white) || (move_count % 2 == 0 && mass[first_coord]->get_figure_color() == black))) {
+        TFigure* figure = mass[first_coord];
+        if (check_possibility_move(figure, last_coord)) {
+            if (check_take_on_pass(figure)) { take_on_pass(figure); }
+            else if (check_castling(figure, last_coord)) { castling(figure, last_coord); }
+            else {
+                figure->move_to(last_coord);
+                if (found_figure(last_coord)) { eatten(mass[last_coord]); }
+            }
         }
-        catch (...) {}
+        //if (check_transform(figure)) { transform(figure, TFigure()); }
+        history.add_move(move_count, first_coord, last_coord, figure);
+        move_count += 1;
     }
 }
 void TGame::eatten(TFigure* figure) {
     figure->move_to(TCoord(-1, -1));
 }
 void TGame::take_on_pass(TFigure* pawn) {
-    pawn->move_to(TCoord(history.get_last_move().get_last_coord().get_x(),
-        (history.get_last_move().get_last_coord().get_y() + history.get_last_move().get_first_coord().get_x()) / 2));
-    eatten(mass[history.get_last_move().get_last_coord()]);
+    pawn->move_to(TCoord(history.get_last_move().last_coord.get_x(),
+        (history.get_last_move().last_coord.get_y() + history.get_last_move().first_coord.get_x()) / 2));
+    eatten(mass[history.get_last_move().last_coord]);
     
 }
-//void TGame::castling(TFigure* king, TFigure* rook) {
-    
-//}
+void TGame::castling(TFigure* figure, TCoord last_coord) {
+    figure->move_to(last_coord);
+    if (last_coord.get_x() == 6) {
+        mass[TCoord(7, figure->get_coord().get_y())]->move_to(TCoord(5, figure->get_coord().get_y()));
+    }
+    if (last_coord.get_x() == 2) {
+        mass[TCoord(0, figure->get_coord().get_y())]->move_to(TCoord(3, figure->get_coord().get_y()));
+    }
+}
 void TGame::transform(TFigure* pawn, TFigure* figure) {
     eatten(pawn);
     mass.add_figure(figure);
 }
-bool TGame::check_take_on_pass(TFigure* pawn) {
-    if(history.get_last_move().get_figure().get_figure_type() == pawn && history.get_last_move().get_last_coord().get_y() == pawn->get_coord().get_y()
-        && abs(history.get_last_move().get_last_coord().get_x() - pawn->get_coord().get_x()) == 1){
-        return true;
+bool TGame::check_take_on_pass(TFigure* figure) {
+    try {
+        if (history.get_last_move().figure->get_figure_type() == pawn && history.get_last_move().last_coord.get_y() == figure->get_coord().get_y()
+            && abs(history.get_last_move().last_coord.get_x() - figure->get_coord().get_x()) == 1 && figure->get_figure_type() == pawn) {
+            return true;
+        }
+        return false;
+    }
+    catch(...){ return false; }
+
+}
+bool TGame::check_castling(TFigure* figure, TCoord last_coord) {
+    if (not(checkmate) && not(found_move(figure)) && figure->get_figure_type() == king) {
+        if (last_coord.get_x() == 6 && found_figure(TCoord(7 ,figure->get_coord().get_y())) && not(found_move(mass[TCoord(7, figure->get_coord().get_y())]))) {
+            if (check_possibility_move(mass[TCoord(7, figure->get_coord().get_y())], TCoord(5, figure->get_coord().get_y())) && not(found_figure(TCoord(5, figure->get_coord().get_y())))) {
+                return true;
+            }
+        }
+        if (last_coord.get_x() == 2 && found_figure(TCoord(0, figure->get_coord().get_y())) && not(found_move(mass[TCoord(0, figure->get_coord().get_y())]))) {
+            if (check_possibility_move(mass[TCoord(0, figure->get_coord().get_y())], TCoord(3, figure->get_coord().get_y())) && not(found_figure(TCoord(3, figure->get_coord().get_y())))) {
+                return true;
+            }
+        }
     }
     return false;
 }
-bool TGame::check_castling(TFigure* king) {
-    //if(проверка на то, что король и ладья не ходили){return false;}
-    
-
-}
-bool TGame::check_transform(TFigure* pawn) {
-    return (pawn->get_figure_color() == black && pawn->get_coord().get_y() == 0) || (pawn->get_figure_color() == white && pawn->get_coord().get_y() == 7);
-}
-void TGame::transform(TFigure* pawn, TFigure* figure) { //swap для массива фигур прописать
-    mass.add_figure(figure);
-    eatten(pawn);
+bool TGame::check_transform(TFigure* figure) {
+    if (figure->get_figure_type() == pawn) {
+        return (figure->get_figure_color() == black && figure->get_coord().get_y() == 0) || (figure->get_figure_color() == white && figure->get_coord().get_y() == 7);
+    }
+    return false;
 }
 bool TGame::checkmate() {
     TCoord king_coord;
@@ -840,9 +882,12 @@ bool TGame::check_possibility_move_knight(TFigure* figure, TCoord last_coord) {
 }
 bool TGame::check_possibility_move(TFigure* figure, TCoord last_coord) {
     if (figure->get_figure_type() == pawn) { return check_possibility_move_pawn(figure, last_coord) || check_take_on_pass(figure); }
-    if (figure->get_figure_type() == king) { return check_possibility_move_pawn(figure, last_coord); }
+    if (figure->get_figure_type() == king) { return check_possibility_move_pawn(figure, last_coord) || check_castling(figure, last_coord); }
     if (figure->get_figure_type() == queen) { return check_possibility_move_pawn(figure, last_coord); }
     if (figure->get_figure_type() == bishop) { return check_possibility_move_pawn(figure, last_coord); }
     if (figure->get_figure_type() == rook) { return check_possibility_move_pawn(figure, last_coord); }
     if (figure->get_figure_type() == knight) { return check_possibility_move_pawn(figure, last_coord); }
+}
+bool end_game() {
+
 }
