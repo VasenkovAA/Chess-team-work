@@ -213,7 +213,7 @@ public:
     TGame(TGame& tmp);
     bool found_figure(TCoord coord);
     bool found_move(TFigure* figure);
-    void move(TCoord first_coord, TCoord last_coord);
+    bool move(TCoord first_coord, TCoord last_coord);
     void eatten(TFigure* figure);
     bool check_possibility_move(TFigure* figure, TCoord last_coord);
     bool check_possibility_move_pawn(TFigure* figure, TCoord last_coord);
