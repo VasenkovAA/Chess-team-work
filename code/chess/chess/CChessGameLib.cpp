@@ -625,7 +625,7 @@ bool TGame::found_move(TFigure* figure) {
         return 0;
     }
 }
-void TGame::move(TCoord first_coord, TCoord last_coord) {
+bool TGame::move(TCoord first_coord, TCoord last_coord) {
     if (found_figure(first_coord) && 
         ((move_count % 2 == 1 && mass[first_coord]->get_figure_color() == white) ||
             (move_count % 2 == 0 && mass[first_coord]->get_figure_color() == black))) {
@@ -641,7 +641,9 @@ void TGame::move(TCoord first_coord, TCoord last_coord) {
         //if (check_transform(figure)) { transform(figure, TFigure()); }
         history.add_move(move_count, first_coord, last_coord, figure);
         move_count += 1;
+        return true;
     }
+    return false;
 }
 void TGame::eatten(TFigure* figure) {
     figure->move_to(TCoord(-1, -1));
