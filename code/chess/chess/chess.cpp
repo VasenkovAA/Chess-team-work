@@ -12,6 +12,7 @@ int main()
     else { std::cout << "BAD" << endl; }
     if (game.move(TCoord(5, 0), TCoord(2, 3))) { std::cout << "Good" << endl; }
     if (game.move(TCoord(4, 7), TCoord(5, 6))) { std::cout << "Good" << endl; }
+
     if (game.checkmate()) { std::cout << "GOOD"; }
     system("pause");
 }
