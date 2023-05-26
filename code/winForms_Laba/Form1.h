@@ -166,13 +166,11 @@ namespace winFormsLaba {
 
 
 	private: System::Windows::Forms::Panel^ coord11;
-private: System::Windows::Forms::ListBox^ Histiry_ListBox;
-
+private: System::Windows::Forms::ListBox^ listBox1;
 private: System::Windows::Forms::Button^ ResetGameButton;
 private: System::Windows::Forms::Button^ StopGameButton;
 private: System::Windows::Forms::Panel^ coord07;
-private: System::Windows::Forms::PictureBox^ coord_picture00;
-
+private: System::Windows::Forms::PictureBox^ pictureBox1;
 
 
 
@@ -252,7 +250,6 @@ private: System::Windows::Forms::PictureBox^ coord_picture00;
 			this->coord21 = (gcnew System::Windows::Forms::Panel());
 			this->coord20 = (gcnew System::Windows::Forms::Panel());
 			this->coord10 = (gcnew System::Windows::Forms::Panel());
-			this->coord07 = (gcnew System::Windows::Forms::Panel());
 			this->coord06 = (gcnew System::Windows::Forms::Panel());
 			this->coord05 = (gcnew System::Windows::Forms::Panel());
 			this->coord04 = (gcnew System::Windows::Forms::Panel());
@@ -260,18 +257,19 @@ private: System::Windows::Forms::PictureBox^ coord_picture00;
 			this->coord02 = (gcnew System::Windows::Forms::Panel());
 			this->coord01 = (gcnew System::Windows::Forms::Panel());
 			this->coord00 = (gcnew System::Windows::Forms::Panel());
-			this->coord_picture00 = (gcnew System::Windows::Forms::PictureBox());
 			this->SettingsPanel = (gcnew System::Windows::Forms::Panel());
-			this->Histiry_ListBox = (gcnew System::Windows::Forms::ListBox());
+			this->listBox1 = (gcnew System::Windows::Forms::ListBox());
 			this->ResetGameButton = (gcnew System::Windows::Forms::Button());
 			this->StopGameButton = (gcnew System::Windows::Forms::Button());
 			this->textBox2 = (gcnew System::Windows::Forms::TextBox());
 			this->textBox1 = (gcnew System::Windows::Forms::TextBox());
 			this->StartGameButton = (gcnew System::Windows::Forms::Button());
+			this->coord07 = (gcnew System::Windows::Forms::Panel());
+			this->pictureBox1 = (gcnew System::Windows::Forms::PictureBox());
 			this->MainPanel->SuspendLayout();
 			this->coord00->SuspendLayout();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->coord_picture00))->BeginInit();
 			this->SettingsPanel->SuspendLayout();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox1))->BeginInit();
 			this->SuspendLayout();
 			// 
 			// MainPanel
@@ -856,15 +854,6 @@ private: System::Windows::Forms::PictureBox^ coord_picture00;
 			this->coord10->Size = System::Drawing::Size(100, 100);
 			this->coord10->TabIndex = 1;
 			// 
-			// coord07
-			// 
-			this->coord07->Anchor = static_cast<System::Windows::Forms::AnchorStyles>((System::Windows::Forms::AnchorStyles::Bottom | System::Windows::Forms::AnchorStyles::Left));
-			this->coord07->BackColor = System::Drawing::SystemColors::Info;
-			this->coord07->Location = System::Drawing::Point(3, 5);
-			this->coord07->Name = L"coord07";
-			this->coord07->Size = System::Drawing::Size(100, 100);
-			this->coord07->TabIndex = 1;
-			// 
 			// coord06
 			// 
 			this->coord06->Anchor = static_cast<System::Windows::Forms::AnchorStyles>((System::Windows::Forms::AnchorStyles::Bottom | System::Windows::Forms::AnchorStyles::Left));
@@ -923,27 +912,18 @@ private: System::Windows::Forms::PictureBox^ coord_picture00;
 			// 
 			this->coord00->Anchor = static_cast<System::Windows::Forms::AnchorStyles>((System::Windows::Forms::AnchorStyles::Bottom | System::Windows::Forms::AnchorStyles::Left));
 			this->coord00->BackColor = System::Drawing::SystemColors::Info;
-			this->coord00->Controls->Add(this->coord_picture00);
+			this->coord00->Controls->Add(this->pictureBox1);
 			this->coord00->Location = System::Drawing::Point(3, 747);
 			this->coord00->Name = L"coord00";
 			this->coord00->Size = System::Drawing::Size(100, 100);
 			this->coord00->TabIndex = 0;
-			// 
-			// coord_picture00
-			// 
-			this->coord_picture00->BackColor = System::Drawing::SystemColors::Highlight;
-			this->coord_picture00->Location = System::Drawing::Point(3, 3);
-			this->coord_picture00->Name = L"coord_picture00";
-			this->coord_picture00->Size = System::Drawing::Size(94, 94);
-			this->coord_picture00->TabIndex = 0;
-			this->coord_picture00->TabStop = false;
 			// 
 			// SettingsPanel
 			// 
 			this->SettingsPanel->Anchor = static_cast<System::Windows::Forms::AnchorStyles>(((System::Windows::Forms::AnchorStyles::Top | System::Windows::Forms::AnchorStyles::Bottom)
 				| System::Windows::Forms::AnchorStyles::Right));
 			this->SettingsPanel->BackColor = System::Drawing::SystemColors::ControlDark;
-			this->SettingsPanel->Controls->Add(this->Histiry_ListBox);
+			this->SettingsPanel->Controls->Add(this->listBox1);
 			this->SettingsPanel->Controls->Add(this->ResetGameButton);
 			this->SettingsPanel->Controls->Add(this->StopGameButton);
 			this->SettingsPanel->Controls->Add(this->textBox2);
@@ -954,18 +934,18 @@ private: System::Windows::Forms::PictureBox^ coord_picture00;
 			this->SettingsPanel->Size = System::Drawing::Size(200, 850);
 			this->SettingsPanel->TabIndex = 1;
 			// 
-			// Histiry_ListBox
+			// listBox1
 			// 
-			this->Histiry_ListBox->Anchor = static_cast<System::Windows::Forms::AnchorStyles>((((System::Windows::Forms::AnchorStyles::Top | System::Windows::Forms::AnchorStyles::Bottom)
+			this->listBox1->Anchor = static_cast<System::Windows::Forms::AnchorStyles>((((System::Windows::Forms::AnchorStyles::Top | System::Windows::Forms::AnchorStyles::Bottom)
 				| System::Windows::Forms::AnchorStyles::Left)
 				| System::Windows::Forms::AnchorStyles::Right));
-			this->Histiry_ListBox->BackColor = System::Drawing::SystemColors::ActiveCaption;
-			this->Histiry_ListBox->FormattingEnabled = true;
-			this->Histiry_ListBox->ItemHeight = 20;
-			this->Histiry_ListBox->Location = System::Drawing::Point(3, 143);
-			this->Histiry_ListBox->Name = L"Histiry_ListBox";
-			this->Histiry_ListBox->Size = System::Drawing::Size(194, 704);
-			this->Histiry_ListBox->TabIndex = 5;
+			this->listBox1->BackColor = System::Drawing::SystemColors::ActiveCaption;
+			this->listBox1->FormattingEnabled = true;
+			this->listBox1->ItemHeight = 20;
+			this->listBox1->Location = System::Drawing::Point(3, 143);
+			this->listBox1->Name = L"listBox1";
+			this->listBox1->Size = System::Drawing::Size(194, 704);
+			this->listBox1->TabIndex = 5;
 			// 
 			// ResetGameButton
 			// 
@@ -1009,6 +989,24 @@ private: System::Windows::Forms::PictureBox^ coord_picture00;
 			this->StartGameButton->UseVisualStyleBackColor = true;
 			this->StartGameButton->Click += gcnew System::EventHandler(this, &Form1::StartGameButton_Click);
 			// 
+			// coord07
+			// 
+			this->coord07->Anchor = static_cast<System::Windows::Forms::AnchorStyles>((System::Windows::Forms::AnchorStyles::Bottom | System::Windows::Forms::AnchorStyles::Left));
+			this->coord07->BackColor = System::Drawing::SystemColors::Info;
+			this->coord07->Location = System::Drawing::Point(3, 5);
+			this->coord07->Name = L"coord07";
+			this->coord07->Size = System::Drawing::Size(100, 100);
+			this->coord07->TabIndex = 1;
+			// 
+			// pictureBox1
+			// 
+			this->pictureBox1->BackColor = System::Drawing::SystemColors::Highlight;
+			this->pictureBox1->Location = System::Drawing::Point(3, 3);
+			this->pictureBox1->Name = L"pictureBox1";
+			this->pictureBox1->Size = System::Drawing::Size(94, 94);
+			this->pictureBox1->TabIndex = 0;
+			this->pictureBox1->TabStop = false;
+			// 
 			// Form1
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(9, 20);
@@ -1022,9 +1020,9 @@ private: System::Windows::Forms::PictureBox^ coord_picture00;
 			this->Resize += gcnew System::EventHandler(this, &Form1::Form1_Resize);
 			this->MainPanel->ResumeLayout(false);
 			this->coord00->ResumeLayout(false);
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->coord_picture00))->EndInit();
 			this->SettingsPanel->ResumeLayout(false);
 			this->SettingsPanel->PerformLayout();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox1))->EndInit();
 			this->ResumeLayout(false);
 
 		}
